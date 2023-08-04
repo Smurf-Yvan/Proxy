@@ -26,9 +26,6 @@ jobs:
           else
             wget https://nodefree.org/dy/$DATE.yaml -O VPN.yaml
           fi
-      - name: Copy Files to Main Branch
-        run: |
-          cp -R tmp/* Clash/
       - name: Commit and Push Changes
         run: |
           git config --local user.email "action@github.com"
