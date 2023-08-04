@@ -20,8 +20,7 @@ jobs:
           echo "DATE=${DATE}" >> $GITHUB_ENV
       - name: Run Update VPN
         run: |
-          mkdir tmp
-          cd tmp
+          cd Clash
           if [ -n "${{ github.event.inputs.Date }}" ]; then
             wget https://nodefree.org/dy/${{ github.event.inputs.Date }}.yaml -O VPN.yaml
           else
