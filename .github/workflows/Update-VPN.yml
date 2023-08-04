@@ -20,12 +20,13 @@ jobs:
           echo "DATE=${DATE}" >> $GITHUB_ENV
       - name: Run Update VPN
         run: |
-          cd Clash
           if [ -n "${{ github.event.inputs.Date }}" ]; then
             wget https://nodefree.org/dy/${{ github.event.inputs.Date }}.yaml -O VPN.yaml
           else
             wget https://nodefree.org/dy/$DATE.yaml -O VPN.yaml
           fi
+          rm -rf /Clash/VPN.yaml
+          mv VPN.yaml /Clash/
       - name: Commit and Push Changes
         run: |
           git config --local user.email "action@github.com"
