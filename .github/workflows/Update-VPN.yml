@@ -12,7 +12,6 @@ jobs:
   Update-VPN:
     runs-on: ubuntu-latest
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
       - name: Set dynamic date format
         run: |
@@ -27,6 +26,15 @@ jobs:
           fi
           rm -rf /Clash/VPN.yaml
           mv VPN.yaml Clash/
-      - name: Commit and Push Changes
+      - name: Commit changes
         run: |
-          git push -f origin main
+          git config --global user.name "Your Name"
+          git config --global user.email "your.email@example.com"
+          git add path/to/modified_file.txt
+          git commit -m "Replace file via GitHub Actions"
+
+      - name: Push changes to main
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: main
