@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  schedule:
+    - cron: '0 5 * * *'
+  workflow_dispatch:
+    inputs:
+      Date:
+        description: '日期 格式YYYY/MM/YYYYMMDD'
+        required: false
+jobs:
+  Update-VPN:
+    runs-on: ubuntu-latest
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+      - name: Set dynamic date format
+        run: |
+          DATE=$(date +'%Y/%m/%Y%m%d')
+          echo "DATE=${DATE}" >> $GITHUB_ENV
+      - name: Run Update VPN
+        run: |
+          mkdir tmp
+          cd tmp
+          if [ -n "${{ github.event.inputs.Date }}" ]; then
+            wget https://nodefree.org/dy/${{ github.event.inputs.Date }}.yaml
+          else
+            wget https://nodefree.org/dy/$DATE.yaml
+          fi
+      - name: Copy Files to Main Branch
+        run: |
+          cp -R tmp/* Clash/
+      - name: Commit and Push Changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git commit -m "Update files from GitHub Action"
+          git push origin main
