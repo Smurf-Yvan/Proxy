@@ -23,9 +23,9 @@ jobs:
           mkdir tmp
           cd tmp
           if [ -n "${{ github.event.inputs.Date }}" ]; then
-            wget https://nodefree.org/dy/${{ github.event.inputs.Date }}.yaml
+            wget https://nodefree.org/dy/${{ github.event.inputs.Date }}.yaml -O VPN.yaml
           else
-            wget https://nodefree.org/dy/$DATE.yaml
+            wget https://nodefree.org/dy/$DATE.yaml -O VPN.yaml
           fi
       - name: Copy Files to Main Branch
         run: |
