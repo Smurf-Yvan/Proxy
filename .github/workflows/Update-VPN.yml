@@ -29,8 +29,4 @@ jobs:
           mv VPN.yaml Clash/
       - name: Commit and Push Changes
         run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add .
-          git commit -m "Update files from GitHub Action"
           git push -f origin main
