@@ -26,7 +26,7 @@ jobs:
             wget https://nodefree.org/dy/$DATE.yaml -O VPN.yaml
           fi
           rm -rf /Clash/VPN.yaml
-          mv VPN.yaml /Clash/
+          mv VPN.yaml Clash/
       - name: Commit and Push Changes
         run: |
           git config --local user.email "action@github.com"
