@@ -21,9 +21,9 @@ jobs:
         run: |
           cd Clash
           if [ -n "${{ github.event.inputs.Date }}" ]; then
-            wget https://nodefree.org/dy/${{ github.event.inputs.Date }}.yaml -O VPN.yaml
+            wget https://nodefree.org/dy/${{ github.event.inputs.Date }}.txt -O VPN.txt
           else
-            wget https://nodefree.org/dy/$DATE.yaml -O VPN.yaml
+            wget https://nodefree.org/dy/$DATE.txt -O VPN.txt
           fi
       - name: Commit and Push Changes
         run: |
