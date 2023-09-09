@@ -1,4 +1,4 @@
-#!MANAGED-CONFIG http://test.com/surfboard.conf interval=43200 strict=true
+#!MANAGED-CONFIG https://ghproxy.com/https://raw.githubusercontent.com/Smurf-Yvan/Proxy/main/Surfboard/VPN.txt interval=43200 strict=true
 
 [General]
 loglevel = notify
