@@ -1,0 +1,45 @@
+name: Azure VM Management
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  manage-vm:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Stop VM
+        run: |
+          az vm deallocate --resource-group QQBOT_group --name zhenxun
+        shell: bash
+
+      - name: Start VM
+        run: |
+          az vm start --resource-group QQBOT_group --name zhenxun
+        shell: bash
+
+      - name: Get VM Public IP and Write to File
+        run: |
+          vm_ip=$(az vm show --resource-group  QQBOT_group --name zhenxun --query 'publicIps' -o tsv)
+          echo $vm_ip > vm_ip.txt
+        shell: bash
+
+      - name: Commit IP File
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add vm_ip.txt
+          git commit -m "Update VM IP"
+          git push
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
