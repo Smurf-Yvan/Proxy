@@ -1,45 +1,45 @@
-name: Azure VM Management
+name: Manage Azure VM
 
 on:
   workflow_dispatch:
+
 jobs:
   manage-vm:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repository
+      - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Azure Login
+      - name: Set up Azure CLI
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-      - name: Install Azure CLI
-        run: |
-          curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
-        if: runner.os == 'Linux'
-      - name: Stop VM
-        run: |
-          az vm deallocate --resource-group QQBOT_group --name zhenxun
-        shell: bash
 
-      - name: Start VM
+      - name: Stop Azure VM
         run: |
-          az vm start --resource-group QQBOT_group --name zhenxun
-        shell: bash
+          az vm deallocate --resource-group ${{ secrets.RESOURCE_GROUP_NAME }} --name ${{ secrets.VM_NAME }}
+        continue-on-error: true
 
-      - name: Get VM Public IP and Write to File
+      - name: Start Azure VM
         run: |
-          vm_ip=$(az vm show --resource-group  QQBOT_group --name zhenxun --query 'publicIps' -o tsv)
-          echo $vm_ip > vm_ip.txt
-        shell: bash
+          az vm start --resource-group ${{ secrets.RESOURCE_GROUP_NAME }} --name ${{ secrets.VM_NAME }}
+        continue-on-error: true
 
-      - name: Commit IP File
+      - name: Get VM IP Address
+        id: get-vm-ip
         run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
+          vm_ip=$(az vm show -d --resource-group ${{ secrets.RESOURCE_GROUP_NAME }} --name ${{ secrets.VM_NAME }} --query publicIps -o tsv)
+          echo "::set-output name=ip_address::${vm_ip}"
+        continue-on-error: true
+
+      - name: Write IP Address to File
+        run: echo "${{ steps.get-vm-ip.outputs.ip_address }}" > vm_ip.txt
+
+      - name: Commit IP Address to Repo
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@users.noreply.github.com"
           git add vm_ip.txt
-          git commit -m "Update VM IP"
+          git commit -m "Update VM IP Address"
           git push
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        shell: bash
+        continue-on-error: true
