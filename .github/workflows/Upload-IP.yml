@@ -13,7 +13,10 @@ jobs:
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-
+      - name: Install Azure CLI
+        run: |
+          curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+        if: runner.os == 'Linux'
       - name: Stop VM
         run: |
           az vm deallocate --resource-group QQBOT_group --name zhenxun
