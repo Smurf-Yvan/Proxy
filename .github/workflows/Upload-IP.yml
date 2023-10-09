@@ -4,50 +4,37 @@ on:
   workflow_dispatch:
 
 jobs:
-  manage-vm:
+  manage-azure-vm:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
-
-      - name: 'Az CLI login'
-        uses: azure/login@v1
+      
+      - name: Set up Azure CLI
+        uses: azure/CLI@v1
         with:
-            client-id: ${{ secrets.AZURE_CLIENT_ID }}
-            tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-            subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-  
-      - name: 'Run Azure CLI commands'
-        run: |
-            az account show
-            az group list
-            pwd
+          azcliversion: 2.0.72
+      
+      - name: Log in to Azure
+        run: az login --service-principal -u ${{ secrets.AZURE_CLIENT_ID }} -p ${{ secrets.AZURE_CLIENT_SECRET }} --tenant ${{ secrets.AZURE_TENANT_ID }}
+        
       - name: Stop Azure VM
-        run: |
-          az vm deallocate --resource-group ${{ secrets.RESOURCE_GROUP_NAME }} --name ${{ secrets.VM_NAME }}
-        continue-on-error: true
-
+        run: az vm deallocate --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} --name ${{ secrets.AZURE_VM_NAME }} --no-wait
+        
+      - name: Wait for VM to deallocate
+        run: sleep 60s  # Adjust this time according to your VM's deallocation time
+        
       - name: Start Azure VM
-        run: |
-          az vm start --resource-group ${{ secrets.RESOURCE_GROUP_NAME }} --name ${{ secrets.VM_NAME }}
-        continue-on-error: true
-
-      - name: Get VM IP Address
+        run: az vm start --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} --name ${{ secrets.AZURE_VM_NAME }}
+        
+      - name: Wait for VM to start
+        run: sleep 60s  # Adjust this time according to your VM's startup time
+        
+      - name: Get VM Public IP
         id: get-vm-ip
         run: |
-          vm_ip=$(az vm show -d --resource-group ${{ secrets.RESOURCE_GROUP_NAME }} --name ${{ secrets.VM_NAME }} --query publicIps -o tsv)
-          echo "::set-output name=ip_address::${vm_ip}"
-        continue-on-error: true
-
-      - name: Write IP Address to File
-        run: echo "${{ steps.get-vm-ip.outputs.ip_address }}" > vm_ip.txt
-
-      - name: Commit IP Address to Repo
-        run: |
-          git config user.name "GitHub Actions"
-          git config user.email "actions@users.noreply.github.com"
-          git add vm_ip.txt
-          git commit -m "Update VM IP Address"
-          git push
-        continue-on-error: true
+          ip=$(az vm show -d -g ${{ secrets.AZURE_RESOURCE_GROUP }} -n ${{ secrets.AZURE_VM_NAME }} --query publicIps -o tsv)
+          echo "::set-output name=ip::$ip"
+        
+      - name: Write IP to file
+        run: echo "${{ steps.get-vm-ip.outputs.ip }}" > ${{ secrets.OUTPUT_FILE_PATH }}
