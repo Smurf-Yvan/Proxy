@@ -7,20 +7,9 @@ jobs:
   manage-vm:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-
-    - name: Set up Azure CLI
-      uses: azure/login@v1
+    - uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-    - name: Stop Azure VM
-      run: |
-        az vm deallocate --resource-group ${{ secrets.RESOURCE_GROUP_NAME }} --name ${{ secrets.VM_NAME }} --no-wait
-      if: github.event_name == 'push' && contains(github.event.head_commit.message, 'stop-vm')
-
-    - name: Start Azure VM
-      run: |
-        az vm start --resource-group ${{ secrets.RESOURCE_GROUP_NAME }} --name ${{ secrets.VM_NAME }}
-      if: github.event_name == 'push' && contains(github.event.head_commit.message, 'start-vm')
+    
+    - run: |
+        az webapp list --query "[?state=='Running']"
