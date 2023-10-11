@@ -6,6 +6,8 @@ on:
 jobs:
   manage-vm:
     runs-on: ubuntu-latest
+    container:
+      image: bitnami/azure-cli:2.31.0
     steps:
     - uses: azure/login@v1
       with:
