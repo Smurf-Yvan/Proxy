@@ -7,9 +7,17 @@ jobs:
   manage-vm:
     runs-on: ubuntu-latest
     steps:
-    - uses: azure/login@v1
-      with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
-    
-    - run: |
-        az webapp list --query "[?state=='Running']"
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Azure CLI
+        uses: azure/setup-azure-cli@v1
+        with:
+          creds_source: ServicePrincipal
+          subscription_id: c7c3028b-069d-4b91-858c-09173b3d3669
+
+      - name: List Azure resource groups
+        id: list-resource-groups
+        run: |
+          az group list --query [].name -o table
+
