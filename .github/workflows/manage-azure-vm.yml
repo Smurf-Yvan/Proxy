@@ -4,12 +4,20 @@ on:
   workflow_dispatch:
 
 jobs:
-  manage-vm:
+  deploy:
     runs-on: ubuntu-latest
     steps:
-    - uses: azure/login@v1
-      with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        
+      - name: Set up Azure CLI
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+        
+      - name: Deploy to Azure
+        run: |
+          # Your deployment commands here
+          # For example, use Azure CLI commands to deploy your application
+          # az webapp deploy ...
 
-    - run: |
-        az webapp list --query "[?state=='Running']"
