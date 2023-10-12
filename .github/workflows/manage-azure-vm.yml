@@ -55,7 +55,7 @@ jobs:
           SMTP_PORT: ${{ secrets.SMTP_PORT }}
           SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
           SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
-          TO_EMAIL: ${{ secrets.TO_EMAILS }}
+          TO_EMAILS: ${{ secrets.TO_EMAILS }}
         run: |
           python - <<EOF
           import smtplib
@@ -65,15 +65,16 @@ jobs:
           SMTP_PORT = os.environ["SMTP_PORT"]
           SMTP_USERNAME = os.environ["SMTP_USERNAME"]
           SMTP_PASSWORD = os.environ["SMTP_PASSWORD"]
-          TO_EMAIL = os.environ["TO_EMAILS"] 
+          TO_EMAILS = os.environ["TO_EMAILS"].split(',')
           msg = MIMEText("VPN IP地址已更新，更新为：${{ steps.get-ip.outputs.ip }}")
           msg["Subject"] = "Azure VM IP Address"
           msg["From"] = SMTP_USERNAME
-          msg["To"] = TO_EMAILS
+          msg["To"] = ', '.join(TO_EMAILS)
           server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
           server.starttls()
           server.login(SMTP_USERNAME, SMTP_PASSWORD)
-          server.sendmail(SMTP_USERNAME, [TO_EMAIL], msg.as_string())
+          server.sendmail(SMTP_USERNAME, TO_EMAILS, msg.as_string())
           server.quit()
           EOF
         continue-on-error: true
+
