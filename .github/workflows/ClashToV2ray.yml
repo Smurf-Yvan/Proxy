@@ -19,7 +19,7 @@ jobs:
 
     - name: Install dependencies
       run: |
-        go get -u github.com/cyberboysumanjay/go-clash
+        go get -u github.com/Dreamacro/clash
       env:
         GO111MODULE: on
 
