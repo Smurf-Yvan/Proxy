@@ -17,9 +17,11 @@ jobs:
       with:
         go-version: 1.17
 
-    - name: Install dependencies
+    - name: Initialize Go Modules and Install Dependencies
       run: |
-        go get -u github.com/Dreamacro/clash
+        export GO111MODULE=on
+        go mod init Proxy
+        go get github.com/Dreamacro/clash@latest
       env:
         GO111MODULE: on
 
