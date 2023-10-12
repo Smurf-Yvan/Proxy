@@ -45,15 +45,35 @@ jobs:
           git commit -m "Update files from GitHub Action"
           git push -f origin main
 
-      - name: Send IP Address via Email
-        uses: dawidd6/action-send-mail@v2
+      - name: Setup Python
+        uses: actions/setup-python@v2
         with:
-          server_address: smtp.office365.com
-          server_port: 587
-          username: ${{ secrets.EMAIL_USERNAME }}
-          password: ${{ secrets.EMAIL_PASSWORD }}
-          subject: 'Azure VM IP Address'
-          to: ${{ secrets.RECIPIENT_EMAILS }}
-          from: ${{ secrets.EMAIL_USERNAME }}
-          message: 'VPN的IP地址更新为: ${{ steps.get-ip.outputs.ip }}'
+          python-version: 3.x
+      - name: Send Email Notification
+        env:
+          SMTP_SERVER: ${{ secrets.SMTP_SERVER }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          TO_EMAIL: ${{ secrets.TO_EMAILS }}
+        run: |
+          python - <<EOF
+          import smtplib
+          from email.mime.text import MIMEText
+          import os
+          SMTP_SERVER = os.environ["SMTP_SERVER"]
+          SMTP_PORT = os.environ["SMTP_PORT"]
+          SMTP_USERNAME = os.environ["SMTP_USERNAME"]
+          SMTP_PASSWORD = os.environ["SMTP_PASSWORD"]
+          TO_EMAIL = os.environ["TO_EMAILS"] 
+          msg = MIMEText("VPN IP地址已更新，更新为：${{ steps.get-ip.outputs.ip }}")
+          msg["Subject"] = "Azure VM IP Address"
+          msg["From"] = SMTP_USERNAME
+          msg["To"] = TO_EMAILS
+          server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
+          server.starttls()
+          server.login(SMTP_USERNAME, SMTP_PASSWORD)
+          server.sendmail(SMTP_USERNAME, [TO_EMAIL], msg.as_string())
+          server.quit()
+          EOF
         continue-on-error: true
