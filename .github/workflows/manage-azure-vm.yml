@@ -1,6 +1,8 @@
 name: Manage Azure VM
 
 on:
+  schedule:
+    - cron: '0 18 * * *'   
   workflow_dispatch:
 
 jobs:
@@ -53,5 +55,5 @@ jobs:
           subject: 'Azure VM IP Address'
           to: ${{ secrets.RECIPIENT_EMAILS }}
           from: ${{ secrets.EMAIL_USERNAME }}
-          message: 'VPN的IP地址更新为: $(echo ${{ steps.get-ip.outputs.ip }})'
+          message: 'VPN的IP地址更新为: ${{ steps.get-ip.outputs.ip }}'
         continue-on-error: true
