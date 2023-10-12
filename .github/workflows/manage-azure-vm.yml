@@ -27,7 +27,7 @@ jobs:
       - name: Get VM Public IP
         id: get-ip
         run: |
-          ip=$(az vm show -d -g ${{ secrets.AZURE_RESOURCE_GROUP }} -n ${{ secrets.AZURE_VM_NAME }} --query publicIps -o tsv)
+          ip=$(az vm show -d -g ${{ secrets.AZURE_RESOURCE_GROUP_NAME }} -n ${{ secrets.AZURE_VM_NAME }} --query publicIps -o tsv)
           echo "::set-output name=ip::$ip"
 
       - name: Update Personal.conf file
