@@ -76,5 +76,3 @@ jobs:
           server.sendmail(SMTP_USERNAME, TO_EMAILS, msg.as_string())
           server.quit()
           EOF
-        continue-on-error: true
-
