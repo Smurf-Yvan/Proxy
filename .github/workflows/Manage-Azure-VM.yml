@@ -38,7 +38,7 @@ jobs:
           sed -i "14s/.*/VPN = vmess, $(echo ${{ steps.get-ip.outputs.ip }}), 610, username=0497410d-4cac-4cdb-b2ba-14f89625c320, tls=false, vmess-aead=true, skip-cert-verify=true, tfo=false, udp-relay=true/" Personal.conf
           sed -i "81s/.*/  - {"name":"VPN","type":"vmess","server":"$(echo ${{ steps.get-ip.outputs.ip }})","port":610,"cipher":"none","uuid":"0497410d-4cac-4cdb-b2ba-14f89625c320","alterId":0,"tls":false,"skip-cert-verify":true,"servername":"","network":"tcp"}/" V2ray.yaml
           cd ${{ github.workspace }}/Transfer
-          sed -i "4s/.*/  "add": "$(echo ${{ steps.get-ip.outputs.ip }})",/" config.json
+          sed -i "4s/.*/  \"add\": \"$(echo ${{ steps.get-ip.outputs.ip }})\",/" config.json
 
       - name: Commit and Push Changes
         run: |
