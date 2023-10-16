@@ -21,7 +21,9 @@ jobs:
         python-version: '3.x'
 
     - name: Run Python script
-      run: python generate_subscribe_link.py
+      run: |
+        rm -rf V2ray.txt
+        python generate_subscribe_link.py
       working-directory: ${{ github.workspace }}/Transfer
 
     - name: Commit and Push Changes
