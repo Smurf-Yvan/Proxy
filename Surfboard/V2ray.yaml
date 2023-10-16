@@ -78,7 +78,7 @@ dns:
       - 0.0.0.0/32
 
 proxies:
-  - {name:VPN,type:vmess,server:20.222.20.101,port:610,cipher:none,uuid:0497410d-4cac-4cdb-b2ba-14f89625c320,alterId:0,tls:false,skip-cert-verify:true,servername:,network:tcp}
+  - {name:VPN,type:vmess,server:20.18.65.57,port:610,cipher:none,uuid:0497410d-4cac-4cdb-b2ba-14f89625c320,alterId:0,tls:false,skip-cert-verify:true,servername:,network:tcp}
 proxy-groups:
   - name: 🚀 节点选择
     type: select
