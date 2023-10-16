@@ -5,6 +5,7 @@ on:
     workflows: ["Manage Azure VM"]
     types:
       - completed
+  workflow_dispatch:
 
 jobs:
   generate_subscribe_link:
