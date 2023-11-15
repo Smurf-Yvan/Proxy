@@ -23,13 +23,13 @@ jobs:
           if [ -n "${{ github.event.inputs.Date }}" ]; then
             wget https://nodefree.org/dy/${{ github.event.inputs.Date }}.yaml -O VPN.yaml
           else
-            wget https://nodefree.org/dy/$DATE.txt -O VPN.yaml
+            wget https://nodefree.org/dy/$DATE.yaml -O VPN.yaml
           fi
       - name: Run Update VPN （V2ray）
         run: |
           cd V2ray
           if [ -n "${{ github.event.inputs.Date }}" ]; then
-            wget https://nodefree.org/dy/${{ github.event.inputs.Date }}.yaml -O VPN.txt
+            wget https://nodefree.org/dy/${{ github.event.inputs.Date }}.txt -O VPN.txt
           else
             wget https://nodefree.org/dy/$DATE.txt -O VPN.txt
           fi
