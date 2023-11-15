@@ -1,4 +1,4 @@
-name: Clash VPN
+name: Nodefree VPN
 
 on:
   schedule:
@@ -17,13 +17,21 @@ jobs:
         run: |
           DATE=$(date +'%Y/%m/%Y%m%d')
           echo "DATE=${DATE}" >> $GITHUB_ENV
-      - name: Run Update VPN
+      - name: Run Update VPN （Clash）
         run: |
           cd Clash
           if [ -n "${{ github.event.inputs.Date }}" ]; then
-            wget https://nodefree.org/dy/${{ github.event.inputs.Date }}.txt -O VPN.txt
+            wget https://nodefree.org/dy/${{ github.event.inputs.Date }}.yaml -O VPN.yaml
           else
-            wget https://nodefree.org/dy/$DATE.txt -O VPN.txt
+            wget https://nodefree.org/dy/$DATE.txt -O VPN.yaml
+          fi
+      - name: Run Update VPN （V2ray）
+        run: |
+          cd V2ray
+          if [ -n "${{ github.event.inputs.Date }}" ]; then
+            wget https://nodefree.org/dy/${{ github.event.inputs.Date }}.yaml -O VPN.yaml
+          else
+            wget https://nodefree.org/dy/$DATE.txt -O VPN.yaml
           fi
       - name: Commit and Push Changes
         run: |
