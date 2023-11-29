@@ -35,11 +35,11 @@ jobs:
       - name: Update Personal.conf file
         run: |
           cd Surfboard
-          sed -i "14s/.*/VPN = vmess, $(echo ${{ steps.get-ip.outputs.ip }}), 610, username=0497410d-4cac-4cdb-b2ba-14f89625c320, tls=false, vmess-aead=true, skip-cert-verify=true, tfo=false, udp-relay=true/" Personal.conf
+          sed -i "14s/.*/Personal = vmess, $(echo ${{ steps.get-ip.outputs.ip }}), 47862, username=81c5c983-a52a-49e5-b6d5-2e1f5b1ae024, tls=false, vmess-aead=true, skip-cert-verify=true, tfo=false, udp-relay=true/" Personal.conf
           cd ${{ github.workspace }}/Transfer
           sed -i "4s/.*/  \"add\": \"$(echo ${{ steps.get-ip.outputs.ip }})\",/" config.json
           cd ${{ github.workspace }}/Clash
-          sed -i "81s/.*/  - {\"name\":\"VPN\",\"type\":\"vmess\",\"server\":\"$(echo ${{ steps.get-ip.outputs.ip }})\",\"port\":610,\"cipher\":\"auto\",\"uuid\":\"0497410d-4cac-4cdb-b2ba-14f89625c320\",\"alterId\":0,\"tls\":false,\"skip-cert-verify\":true,\"servername\":\"\",\"network\":\"tcp\"}/" Personal.yaml
+          sed -i "81s/.*/  - {\"name\":\"Personal\",\"type\":\"vmess\",\"server\":\"$(echo ${{ steps.get-ip.outputs.ip }})\",\"port\":47862,\"cipher\":\"auto\",\"uuid\":\"81c5c983-a52a-49e5-b6d5-2e1f5b1ae024\",\"alterId\":0,\"tls\":false,\"skip-cert-verify\":true,\"servername\":\"\",\"network\":\"tcp\"}/" Personal.yaml
 
       - name: Commit and Push Changes
         run: |
