@@ -78,7 +78,7 @@ dns:
       - 0.0.0.0/32
 
 proxies:
-  - {"name":"Personal","type":"vmess","server":"20.48.58.37","port":47862,"cipher":"auto","uuid":"81c5c983-a52a-49e5-b6d5-2e1f5b1ae024","alterId":0,"tls":false,"skip-cert-verify":true,"servername":"","network":"tcp"}
+  - {"name":"Personal","type":"vmess","server":"4.216.91.77","port":47862,"cipher":"auto","uuid":"81c5c983-a52a-49e5-b6d5-2e1f5b1ae024","alterId":0,"tls":false,"skip-cert-verify":true,"servername":"","network":"tcp"}
 proxy-groups:
   - name: 🚀 节点选择
     type: select
