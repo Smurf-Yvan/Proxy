@@ -34,20 +34,33 @@ jobs:
 
       - name: Update Personal.conf file
         run: |
-          cd Surfboard
-          sed -i "14s/.*/Personal = vmess, $(echo ${{ steps.get-ip.outputs.ip }}), 47862, username=81c5c983-a52a-49e5-b6d5-2e1f5b1ae024, tls=false, vmess-aead=true, skip-cert-verify=true, tfo=false, udp-relay=true/" Personal.conf
-          cd ${{ github.workspace }}/Transfer
+          mkdir Proxy
+          cd Proxy
+          wget "https://m.yvan.eu.org/d/私人/Proxy/Clash.yaml"
+          wget "https://m.yvan.eu.org/d/私人/Proxy/Surfboard.conf"
+          wget "https://m.yvan.eu.org/d/私人/Proxy/config.json"
+          sed -i "14s/.*/Personal = vmess, $(echo ${{ steps.get-ip.outputs.ip }}), 56765, username = a2e63327-6af8-4381-9a53-78cd756a5a90, tls = false, vmess-aead = false, skip-cert-verify = true, sni = , tfo = false, sni = " Surfboard.conf
           sed -i "4s/.*/  \"add\": \"$(echo ${{ steps.get-ip.outputs.ip }})\",/" config.json
-          cd ${{ github.workspace }}/Clash
-          sed -i "81s/.*/  - {\"name\":\"Personal\",\"type\":\"vmess\",\"server\":\"$(echo ${{ steps.get-ip.outputs.ip }})\",\"port\":47862,\"cipher\":\"auto\",\"uuid\":\"81c5c983-a52a-49e5-b6d5-2e1f5b1ae024\",\"alterId\":0,\"tls\":false,\"skip-cert-verify\":true,\"servername\":\"\",\"network\":\"tcp\"}/" Personal.yaml
+          sed -i "81s/.*/  - {\"name\":\"Personal\",\"type\":\"vmess\",\"server\":\"$(echo ${{ steps.get-ip.outputs.ip }})\",\"port\":56765,\"cipher\":\"auto\",\"uuid\":\"a2e63327-6af8-4381-9a53-78cd756a5a90\",\"alterId\":0,\"tls\":false,\"skip-cert-verify\":true,\"servername\":\"\",\"network\":\"tcp\"}/" Clash.yaml
 
-      - name: Commit and Push Changes
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
+
+    - name: Generate V2Ray Subscribe Link
+      run: |
+        mv ${{ github.workspace }}/Proxy/config.json ./
+        python generate_subscribe_link.py
+        mv V2ray.txt ${{ github.workspace }}/Proxy/
+      working-directory: ${{ github.workspace }}/Transfer
+
+      - name: Upload Proxy Files
         run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add .
-          git commit -m "Update files from GitHub Action"
-          git push -f origin main
+          cd OnedriveCli
+          wget "https://m.yvan.eu.org/d/%E7%A7%81%E4%BA%BA/Proxy/auth.json"
+          chmod +x OneDriveUploader
+          ./OneDriveUploader -s "${{ github.workspace }}/Proxy" -r "Personal_Interest"
 
       - name: Setup Python
         uses: actions/setup-python@v2
