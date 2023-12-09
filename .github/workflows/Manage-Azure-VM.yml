@@ -39,7 +39,7 @@ jobs:
           wget "https://m.yvan.eu.org/d/私人/Proxy/Clash.yaml"
           wget "https://m.yvan.eu.org/d/私人/Proxy/Surfboard.conf"
           wget "https://m.yvan.eu.org/d/私人/Proxy/config.json"
-          sed -i "14s/.*/Personal = vmess, $(echo ${{ steps.get-ip.outputs.ip }}), 56765, username = a2e63327-6af8-4381-9a53-78cd756a5a90, tls = false, vmess-aead = false, skip-cert-verify = true, sni = , tfo = false, sni = " Surfboard.conf
+          sed -i "14s/.*/Personal = vmess, $(echo ${{ steps.get-ip.outputs.ip }}), 56765, username = a2e63327-6af8-4381-9a53-78cd756a5a90, tls = false, vmess-aead = false, skip-cert-verify = true, sni = , tfo = false, sni = /" Surfboard.conf
           sed -i "4s/.*/  \"add\": \"$(echo ${{ steps.get-ip.outputs.ip }})\",/" config.json
           sed -i "81s/.*/  - {\"name\":\"Personal\",\"type\":\"vmess\",\"server\":\"$(echo ${{ steps.get-ip.outputs.ip }})\",\"port\":56765,\"cipher\":\"auto\",\"uuid\":\"a2e63327-6af8-4381-9a53-78cd756a5a90\",\"alterId\":0,\"tls\":false,\"skip-cert-verify\":true,\"servername\":\"\",\"network\":\"tcp\"}/" Clash.yaml
 
