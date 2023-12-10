@@ -58,7 +58,6 @@ jobs:
       - name: Upload Proxy Files
         run: |
           cd OnedriveCli
-          wget "https://m.yvan.eu.org/d/%E7%A7%81%E4%BA%BA/Proxy/auth.json"
           chmod +x OneDriveUploader
           ./OneDriveUploader -s "${{ github.workspace }}/Proxy" -r "Personal_Interest"
 
