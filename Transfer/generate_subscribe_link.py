@@ -15,7 +15,7 @@ base64_encoded_config = base64.urlsafe_b64encode(config_json.encode()).decode()
 subscribe_link = f"vmess://{base64_encoded_config}"
 
 # 将订阅链接写入文件
-with open("V2ray.txt", "w") as output_file:
+with open("V2ray.json", "w") as output_file:
     output_file.write(subscribe_link)
 
-print("订阅链接已保存到 V2ray.txt 文件中。")
+print("订阅链接已保存到 V2ray.json 文件中。")
