@@ -52,7 +52,7 @@ jobs:
         run: |
           mv ${{ github.workspace }}/Proxy/config.json ./
           python generate_subscribe_link.py
-          mv V2ray.txt ${{ github.workspace }}/Proxy/
+          mv V2ray.json ${{ github.workspace }}/Proxy/
         working-directory: ${{ github.workspace }}/Transfer
 
       - name: Upload Proxy Files
