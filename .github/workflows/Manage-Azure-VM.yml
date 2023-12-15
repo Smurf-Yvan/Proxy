@@ -46,6 +46,8 @@ jobs:
           sed -i "14s/.*/Personal = vmess, $(echo ${{ steps.get-ip.outputs.ip }}), 22221, username=d5dae1ea-9aa2-4075-83d5-b46d82b961cd, tls=false, vmess-aead=true, skip-cert-verify=true, tfo=false, udp-relay=true/" Surfboard.ini
           sed -i "4s/.*/  \"add\": \"$(echo ${{ steps.get-ip.outputs.ip }})\",/" config.json
           sed -i "81s/.*/  - {\"name\":\"Personal\",\"type\":\"vmess\",\"server\":\"$(echo ${{ steps.get-ip.outputs.ip }})\",\"port\":22221,\"cipher\":\"auto\",\"uuid\":\"a2e63327-6af8-4381-9a53-78cd756a5a90\",\"alterId\":0,\"tls\":false,\"skip-cert-verify\":true,\"servername\":\"\",\"network\":\"tcp\"}/" Clash.yaml
+          mkdir -p Surfboard/profiles
+          mv Surfboard.ini Surfboard/profiles/
 
       - name: Set up Python
         uses: actions/setup-python@v4
