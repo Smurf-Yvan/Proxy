@@ -12,6 +12,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
         
+      - name: Get Proxy Files
+        run: |
+          mkdir Proxy
+          cd Proxy
+          wget "https://m.yvan.eu.org/d/私人/Proxy/Clash.yaml"
+          wget "https://m.yvan.eu.org/d/私人/Proxy/Surfboard.ini"
+          wget "https://m.yvan.eu.org/d/私人/Proxy/config.json"
+
       - name: Set up Azure CLI
         uses: azure/login@v1
         with:
@@ -32,13 +40,9 @@ jobs:
           ip=$(az vm show -d -g ${{ secrets.AZURE_RESOURCE_GROUP_NAME }} -n ${{ secrets.AZURE_VM_NAME }} --query publicIps -o tsv)
           echo "::set-output name=ip::$ip"
 
-      - name: Update Personal.conf file
+      - name: Update Proxy file
         run: |
-          mkdir Proxy
           cd Proxy
-          wget "https://m.yvan.eu.org/d/私人/Proxy/Clash.yaml"
-          wget "https://m.yvan.eu.org/d/私人/Proxy/Surfboard.ini"
-          wget "https://m.yvan.eu.org/d/私人/Proxy/config.json"
           sed -i "14s/.*/Personal = vmess, $(echo ${{ steps.get-ip.outputs.ip }}), 22221, username=d5dae1ea-9aa2-4075-83d5-b46d82b961cd, tls=false, vmess-aead=true, skip-cert-verify=true, tfo=false, udp-relay=true/" Surfboard.ini
           sed -i "4s/.*/  \"add\": \"$(echo ${{ steps.get-ip.outputs.ip }})\",/" config.json
           sed -i "81s/.*/  - {\"name\":\"Personal\",\"type\":\"vmess\",\"server\":\"$(echo ${{ steps.get-ip.outputs.ip }})\",\"port\":22221,\"cipher\":\"auto\",\"uuid\":\"a2e63327-6af8-4381-9a53-78cd756a5a90\",\"alterId\":0,\"tls\":false,\"skip-cert-verify\":true,\"servername\":\"\",\"network\":\"tcp\"}/" Clash.yaml
