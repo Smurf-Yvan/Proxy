@@ -40,5 +40,29 @@ with open('original_template.json', 'r') as f:
 updated_template = original_template.replace('"  在此位置加入生成的结果"', result)
 
 # 写入更新后的模板文件
-with open('Sing-Box.json', 'w') as f:
+with open('config.json', 'w') as f:
     f.write(updated_template)
+
+# 读取IP地址列表
+with open('ip_addresses.txt', 'r') as f:
+    ip_addresses = f.read().splitlines()
+
+# 读取JSON文件
+with open('config.json', 'r') as f:
+    config = json.load(f)
+
+# 更新第一个outbounds的值
+outbounds_1 = ["IP-" + str(i + 1) for i in range(len(ip_addresses))]
+config["outbounds"][0]["outbounds"] = outbounds_1
+
+# 更新第二个outbounds的值
+outbounds_2 = ["IP-" + str(i + 1) for i in range(len(ip_addresses))]
+config["outbounds"][1]["outbounds"] = outbounds_2
+
+# 将JSON对象转换为字符串，并添加换行符
+updated_config_str = json.dumps(config, indent=2)
+updated_config_str = updated_config_str.replace('],', '],\n')  # 添加换行符
+
+# 写入更新后的JSON文件
+with open('Sing-Box.json', 'w') as f:
+    f.write(updated_config_str)

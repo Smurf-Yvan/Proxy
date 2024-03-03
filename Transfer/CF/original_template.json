@@ -103,7 +103,6 @@
       "interval": "1m",
       "tolerance": 50,
       "outbounds": [
-        "auto"
       ]
     },
     {
