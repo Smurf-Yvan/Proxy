@@ -17,6 +17,6 @@ jobs:
       - name: Run Update VPN
         working-directory: ${{ github.workspace }}/OnedriveCli
         run: |
-          ./OneDriveUploader -a "${{ secrets.OnedriveTOKEN }}"
           chmod +x OneDriveUploader
+          ./OneDriveUploader -a "${{ secrets.OnedriveTOKEN }}"
           ./OneDriveUploader -s "${{ github.workspace }}/Transfer/CF/Sing-Box.json" -r "Personal_Interest/Proxy"
