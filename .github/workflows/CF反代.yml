@@ -18,5 +18,4 @@ jobs:
         working-directory: ${{ github.workspace }}/OnedriveCli
         run: |
           chmod +x OneDriveUploader
-          ./OneDriveUploader -a "${{ secrets.OnedriveTOKEN }}"
           ./OneDriveUploader -s "${{ github.workspace }}/Transfer/CF/Sing-Box.json" -r "Proxy"
