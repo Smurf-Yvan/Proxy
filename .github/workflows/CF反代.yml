@@ -1,0 +1,22 @@
+name: CF IP 自动优选
+
+on:
+  schedule:
+    - cron: '*/20 * * * *'
+  workflow_dispatch:
+jobs:
+  Update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run Update VPN
+        working-directory: ${{ github.workspace }}/Transfer/CF
+        run: |
+          wget https://github.com/ymyuuu/IPDB/raw/main/bestproxy.txt -O ip_addresses.txt
+          python3 CF.py
+      - name: Run Update VPN
+        working-directory: ${{ github.workspace }}/OnedriveCli
+        run: |
+          ./OneDriveUploader -a "${{ secrets.OnedriveTOKEN }}"
+          chmod +x OneDriveUploader
+          ./OneDriveUploader -s "${{ github.workspace }}/Transfer/CF/Sing-Box.json" -r "Personal_Interest/Proxy"
