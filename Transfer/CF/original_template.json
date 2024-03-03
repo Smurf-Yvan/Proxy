@@ -93,7 +93,6 @@
       "tag": "select",
       "type": "selector",
       "outbounds": [
-
         "auto"
       ]
     },
@@ -104,14 +103,14 @@
       "interval": "1m",
       "tolerance": 50,
       "outbounds": [
-        
+        "auto"
       ]
     },
     {
       "tag": "🤖 OpenAI",
       "type": "selector",
       "outbounds": [
-        
+        "auto",
         "direct"
       ]
     },
@@ -119,35 +118,35 @@
       "tag": "🌌 Google",
       "type": "selector",
       "outbounds": [
-        
+        "auto"
       ]
     },
     {
       "tag": "📟 Telegram",
       "type": "selector",
       "outbounds": [
-        
+        "auto"
       ]
     },
     {
       "tag": "🐦 Twitter",
       "type": "selector",
       "outbounds": [
-        
+        "auto"
       ]
     },
     {
       "tag": "👤 Facebook",
       "type": "selector",
       "outbounds": [
-        
+        "auto"
       ]
     },
     {
       "tag": "🛍️ Amazon",
       "type": "selector",
       "outbounds": [
-        
+        "auto",
         "direct"
       ]
     },
@@ -155,7 +154,7 @@
       "tag": "🍎 Apple",
       "type": "selector",
       "outbounds": [
-        
+        "auto",
         "direct"
       ]
     },
@@ -163,7 +162,7 @@
       "tag": "🧩 Microsoft",
       "type": "selector",
       "outbounds": [
-        
+        "auto",
         "direct"
       ]
     },
@@ -171,7 +170,7 @@
       "tag": "🎮 Game",
       "type": "selector",
       "outbounds": [
-        
+        "auto",
         "direct"
       ]
     },
@@ -179,6 +178,7 @@
       "tag": "📺 Bilibili",
       "type": "selector",
       "outbounds": [
+        "auto",
         "direct"
       ]
     },
@@ -186,7 +186,7 @@
       "tag": "🎬 MediaVideo",
       "type": "selector",
       "outbounds": [
-        
+        "auto",
         "direct"
       ]
     },
@@ -194,7 +194,7 @@
       "tag": "🌏 !cn",
       "type": "selector",
       "outbounds": [
-        
+        "auto",
         "direct"
       ]
     },
