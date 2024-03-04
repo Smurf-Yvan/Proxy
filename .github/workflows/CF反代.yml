@@ -13,9 +13,12 @@ jobs:
         working-directory: ${{ github.workspace }}/Transfer/CF
         run: |
           wget https://github.com/ymyuuu/IPDB/raw/main/bestproxy.txt -O ip_addresses.txt
+          wget https://github.com/ymyuuu/IPDB/raw/main/proxy.txt -O ip_all.txt
           python3 CF.py
+          python3 CF-All.py
       - name: Run Update VPN
         working-directory: ${{ github.workspace }}/OnedriveCli
         run: |
           chmod +x OneDriveUploader
           ./OneDriveUploader -s "${{ github.workspace }}/Transfer/CF/Sing-Box.json" -r "Proxy"
+          ./OneDriveUploader -s "${{ github.workspace }}/Transfer/CF/Sing-Box-All.json" -r "Proxy"
