@@ -12,6 +12,7 @@ jobs:
       - name: Run Update VPN
         working-directory: ${{ github.workspace }}/Transfer/CF
         run: |
+          pip install geoip2
           wget https://github.com/ymyuuu/IPDB/raw/main/bestproxy.txt -O ip_addresses.txt
           wget https://github.com/ymyuuu/IPDB/raw/main/proxy.txt -O ip_all.txt
           python3 CF.py
