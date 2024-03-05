@@ -17,6 +17,8 @@ jobs:
           wget https://github.com/ymyuuu/IPDB/raw/main/proxy.txt -O ip_all.txt
           python3 CF.py
           python3 CF-All.py
+          sed -i '96i\        "auto",' Sing-Box.json
+          sed -i '96i\        "auto",' Sing-Box-All.json
       - name: Run Update VPN
         working-directory: ${{ github.workspace }}/OnedriveCli
         run: |
