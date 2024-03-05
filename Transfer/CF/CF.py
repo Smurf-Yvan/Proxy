@@ -42,12 +42,15 @@ for i, ip in enumerate(ip_addresses):
     new_template['server'] = ip
     templates.append(new_template)
 
+# 使用换行符连接模板
+result = ',\n'.join(json.dumps(t, indent=2) for t in templates)
+
 # 读取原始模板文件
 with open('original_template.json', 'r') as f:
     original_template = f.read()
 
 # 将生成的结果添加到原始模板文件中
-updated_template = original_template.replace('"  在此位置加入生成的结果"', json.dumps(templates))
+updated_template = original_template.replace('"  在此位置加入生成的结果"', result)
 
 # 写入更新后的模板文件
 with open('config.json', 'w') as f:
@@ -65,6 +68,13 @@ config["outbounds"][0]["outbounds"] = outbounds_1
 outbounds_2 = [template["tag"] for template in templates]
 config["outbounds"][1]["outbounds"] = outbounds_2
 
+# 将 JSON 对象转换为字符串，并添加换行符
+updated_config_str = json.dumps(config, indent=2)
+updated_config_str = updated_config_str.replace('],', '],\n')  # 添加换行符
+
+# 删除多余的换行符
+updated_config_str = updated_config_str.replace('\n\n', '\n')
+
 # 写入更新后的 JSON 文件
 with open('Sing-Box.json', 'w') as f:
-    json.dump(config, f, indent=2)
+    f.write(updated_config_str)
